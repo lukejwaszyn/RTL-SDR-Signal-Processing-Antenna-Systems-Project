@@ -1,4 +1,4 @@
-# RTL-SDR Signal Processing & Antenna System Project
+# RTL-SDR Signal Processing & Antenna Systems Project
 
 This project implements an end-to-end FM-band receive system using an RTL-SDR v4, a custom-built dipole antenna, and a MATLAB-based digital signal processing (DSP) pipeline. The system captures RF signals in the 88–108 MHz commercial FM broadcast band, performs baseband processing and spectral analysis, and supports narrowband FM demodulation for broadcast audio recovery.
 
