@@ -1,108 +1,103 @@
-# RTL-SDR-Signal-Processing-Antenna-Systems-Project
+# RTL-SDR Signal Processing & Antenna System Project
 
-This project implements an end-to-end FM-band receive chain using an RTL-SDR v4, a custom-built dipole antenna, and a MATLAB-based DSP pipeline. The system:
+This project implements an end-to-end FM-band receive system using an RTL-SDR v4, a custom-built dipole antenna, and a MATLAB-based digital signal processing (DSP) pipeline. The system captures RF signals in the 88–108 MHz commercial FM broadcast band, performs baseband processing and spectral analysis, and supports narrowband FM demodulation for broadcast audio recovery.
 
-- Captures RF in the 88–108 MHz commercial FM band using an RTL-SDR.
-- Performs baseband processing and spectrum analysis in MATLAB.
-- (In progress) Demodulates broadcast FM to audio for at least one strong station.
-- Compares a **custom dipole antenna** against the stock RTL-SDR antenna through structured, repeatable measurements.
-
-The emphasis is on treating this as a small systems / verification project: architecture → hardware build → DSP implementation → experimental characterization → documentation.
+The work is intentionally structured as a small **systems and verification effort**, progressing from architecture definition and hardware integration through DSP implementation and experimental characterization using repeatable test configurations.
 
 ---
 
-## Scope and Goals
+## Scope and Objectives
 
-**Core technical goals:**
+**Primary technical objectives:**
 
-- Design and build a custom FM-band dipole (“Dipole v1”) with RG-59 feed and mechanical mounting.
-- Integrate the antenna and feed with an RTL-SDR front end and MATLAB (`comm.SDRRTLReceiver`).
-- Establish repeatable “standard test configurations” for both:
-  - Stock RTL-SDR antenna (control).
-  - Custom Dipole v1 (final hardware).
-- Verify basic RF functionality via PSD/FFT (FM carriers visible under known conditions).
-- Experimentally characterize antenna behavior via:
-  - Orientation changes (0°, 90°, 180°).
-  - Placement / environment changes (porch mounting, height, proximity to structures).
-  - Receiver gain settings (AGC vs fixed gain).
-- Implement a narrowband FM demodulation chain in MATLAB and compare demodulated audio quality between antennas.
-- Use numerical utilities originally developed for ESC 407H (FFT-based analysis, least-squares fitting, etc.) to quantify results (e.g., simple SNR-like metrics vs gain or orientation).
+- Design, construct, and integrate a custom FM-band dipole antenna with RG-59 coax feed and SMA interface.
+- Interface the antenna and RF front end with an RTL-SDR v4 and a MATLAB-based DSP pipeline using `comm.SDRRTLReceiver`.
+- Define and execute repeatable standard test configurations for:
+  - Stock RTL-SDR antenna (control configuration)
+  - Custom dipole antenna (primary hardware)
+- Verify RF functionality via PSD/FFT analysis with identifiable FM carriers under controlled conditions.
+- Characterize antenna behavior through controlled experiments involving:
+  - Orientation changes (0°, 90°, 180°)
+  - Placement and environment changes (mounting height, proximity to structures)
+  - Receiver gain settings (AGC versus fixed gain)
+- Perform narrowband FM demodulation and compare recovered audio quality between antenna configurations.
+- Quantify results using FFT-based analysis and least-squares methods via existing numerical utilities.
 
 ---
 
 ## Project Structure
 
-The repository is organized to separate DSP code, data, hardware details, and experiment notes:
+The repository is organized to clearly separate DSP implementation, experimental data, documentation, and engineering notes:
 
-- `matlab/` – MATLAB scripts and DSP blocks
-  - RTL-SDR bring-up and I/Q capture scripts.
-  - PSD/FFT analysis scripts (e.g., initial FM-band spectrum tests).
-  - (Planned) FM demodulation and metric extraction scripts.
-  - (Planned) Reused numerical utilities from ESC 407H (e.g., FFT/peak analysis, least-squares tools).
+- `matlab/` – DSP implementation and test scripts  
+  - RTL-SDR bring-up and environment sanity checks  
+  - I/Q capture and PSD/FFT-based spectral analysis  
+  - FM demodulation and metric extraction  
+  - Numerical utilities for FFT analysis, peak detection, and least-squares fitting
 
-- `data/` – Captured IQ data and audio outputs
-  - Raw I/Q captures for different antennas, orientations, and gains.
-  - Demodulated audio segments for selected FM stations (stock vs custom antenna).
-  - Intermediate metric files (e.g., peak PSD vs gain, SNR-like values).
+- `data/` – Captured data products  
+  - Raw complex I/Q captures for different antennas, orientations, and gain settings  
+  - Demodulated audio outputs for selected FM stations  
+  - Intermediate metric files used for analysis
 
-- `docs/` – Design and results documentation
-  - System architecture (Architecture v0.1 and later revisions).
-  - Bill of Materials (RTL-SDR, Dipole v1 materials, coax, connectors, tools).
-  - Key figures (PSD plots, orientation/placement comparisons, demod spectra).
-  - Final project report (once all verification steps are complete).
+- `docs/` – Design documentation and results  
+  - System architecture diagrams (Architecture v0.1)  
+  - Bill of Materials (BOM) reflecting current hardware configuration  
+  - Figures (PSD comparisons, orientation and placement studies, demodulation results)  
+  - Final report upon completion of verification activities
 
-- `notes/` – Engineering notebook extracts and working notes
-  - Day-by-day logs (Day 1–N) summarizing decisions, tests, and observations.
-  - Antenna build/rebuild notes (prototype P0 vs Dipole v1).
-  - Test matrices and verification plan (V1–V4 mapping to specific experiments).
+- `notes/` – Engineering notebook extracts  
+  - Day-by-day handwritten logs (Day 1–N)  
+  - Antenna build and revision notes  
+  - Exigence and motivation pages  
+  - Test matrices mapping experiments to verification milestones
 
 ---
 
 ## Verification Plan
 
-Verification is organized around four main milestones:
+Verification activities are organized around four primary milestones:
 
-- **V1 – Carrier Visibility:**  
-  FM carriers clearly visible in PSD for both the stock antenna and the custom Dipole v1 under identical RF/DSP settings.
+- **V1 – Carrier Visibility**  
+  FM carriers are clearly visible in PSD measurements for both the stock antenna and the custom dipole under identical RF and DSP settings.
 
-- **V2 – Orientation & Placement Sensitivity:**  
-  Measurable changes in received power and spectra as Dipole v1 is rotated and/or moved between defined test positions, with the stock antenna used as a control reference.
+- **V2 – Orientation and Placement Sensitivity**  
+  Measurable changes in received power and spectral characteristics are observed as the custom dipole is rotated and repositioned, with the stock antenna used as a control reference.
 
-- **V3 – FM Demodulation:**  
-  Successful FM demodulation (audio) of at least one strong broadcast station using both antennas, with qualitative and simple quantitative (SNR-like) comparisons.
+- **V3 – FM Demodulation**  
+  Verified FM demodulation of at least one strong broadcast station using both antenna configurations, with qualitative and simple quantitative (SNR-like) comparisons of recovered audio.
 
-- **V4 – Quantitative Characterization:**  
-  Basic metrics (e.g., peak PSD, noise floor, SNR-like measures) logged versus tuner gain, orientation, and placement; optional curve fits using existing numerical methods utilities.
+- **V4 – Quantitative Characterization**  
+  Basic metrics (e.g., peak PSD, estimated noise floor, SNR-like measures) logged versus tuner gain, antenna orientation, and placement, with optional curve fitting using existing numerical methods utilities.
 
 ---
 
 ## Status
 
-**As of now:**
+### Hardware
+- RTL-SDR v4 installed and operational.
+- Custom FM-band dipole antenna constructed and integrated using RG-59 coax feed, soldered joints, and SMA pigtail interface.
+- Stock RTL-SDR antenna retained and used as the control configuration.
 
-- **Hardware**
-  - RTL-SDR v4 is installed and operational.
-  - Custom Dipole v1 (final hardware) is built: 18 AWG two-conductor dipole on wooden dowel, RG-59 coax feed, soldered joints with electrical tape insulation, SMA pigtail to RTL-SDR.
-  - Stock RTL-SDR antenna is available and used as the control configuration.
+### DSP / SDR Integration
+- MATLAB environment configured with the Communications Toolbox Support Package for RTL-SDR.
+- Environment sanity check completed and passed.
+- Baseline I/Q capture and spectral analysis implemented, including DC offset removal and PSD estimation via `pwelch`.
+- FM-band spectra successfully captured for both control and custom antenna configurations using consistent RF and DSP parameters.
 
-- **DSP / SDR Integration**
-  - MATLAB environment configured with the Communications Toolbox Support Package for RTL-SDR.
-  - Baseline script implemented (`day4_initial_fft_test`–style) to:
-    - Capture complex I/Q data at a specified FM center frequency.
-    - Remove DC offset and estimate PSD using `pwelch`.
-  - Initial FM-band spectra successfully captured for:
-    - Stock antenna (control).
-    - Custom Dipole v1, using consistent RF/DSP parameters.
+### Verification Progress
+- V1 (carrier visibility) achieved for both antennas.
+- V2–V4 verification activities in progress using a structured test matrix covering orientation, placement, and gain.
 
-- **Verification Progress**
-  - V1 (carrier visibility) is **functionally achieved** for both antennas.
-  - Orientation / placement tests (V2), FM demodulation (V3), and quantitative gain/placement characterization (V4) are **in progress** and being designed using a structured test matrix.
+### Documentation
+A handwritten engineering notebook is being maintained, including day-by-day logs, system architecture revisions, antenna build notes, and verification planning. Scanned notebook pages and selected photos of the physical hardware and test setups are uploaded under `docs/` as supporting artifacts.
 
-- **Documentation**
-  - A dedicated engineering notebook is being maintained with:
-    - Day 1–3 logs (project setup, architecture, antenna build).
-    - System Architecture v0.1 and exigence/motivation.
-    - Antenna build notes (prototype P0 and Dipole v1).
-  - The full notebook (scanned pages) and selected photos of the physical hardware and test setups are planned for upload to `docs/` upon project completion, which is expected approximately 10 days after project start (this coming Tuesday).
+This repository will continue to be updated as additional verification runs, FM demodulation results, and final analysis are completed.
 
-This repository will be updated as additional verification runs (V2–V4), FM demodulation results, and final analysis are completed.
+---
+
+## Notes on Methodology
+
+This project emphasizes **measured performance and verification**, rather than simulation-only results. All analysis is based on captured RF data from physical hardware, with consistent test configurations used to enable meaningful comparisons between antenna setups.
+
+Design revisions and experimental decisions are documented in the engineering notebook and reflected in subsequent verification runs.
