@@ -1,0 +1,3 @@
+env_sanity_check run: 19-Dec-2025 21:16:53
+Fs=1000000, f0=100000, SNR=15.0 dB, FIR L=201, Audio=1
+
