@@ -3,7 +3,7 @@
 % Day 4 Control Test - RTL-SDR Stock & Dipole Antenna
 % Objective: Capture raw I/Q and verify FM carriers in spectrum (V1)
 
-% Parameters - Referenced Chat-GPT 5.1 for parameter conditions
+% Parameters
 fc = 100.1e6; % Center frequency (Hz) (Can vary from 88-108 MHz, testing at 100.1)
 Fs = 2.4e6; % Sample rate (Hz)
 frameLen = 2^16; % Samples per frame
@@ -53,4 +53,5 @@ plot(f/1e6, 10*log10(pxx));
 grid on;
 xlabel('Frequency offset from center (MHz)');
 ylabel('PSD (dB/Hz)');
+
 title(sprintf('RTL-SDR Control Spectrum: fc = %.3f MHz, Fs = %.1f MS/s', fc/1e6, Fs/1e6));
